@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SolarSystem.Api/SolarSystem.Api.csproj" />
+    <Project Path="src/SolarSystem.Application/SolarSystem.Application.csproj" />
+    <Project Path="src/SolarSystem.Domain/SolarSystem.Domain.csproj" />
+    <Project Path="src/SolarSystem.Infrastructure/SolarSystem.Infrastructure.csproj" />
+    <Project Path="src/SolarSystem.Tests/SolarSystem.Tests.csproj" />
+  </Folder>
+</Solution>
