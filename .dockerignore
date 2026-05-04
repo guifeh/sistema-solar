@@ -1,0 +1,49 @@
+# Build output
+bin/
+obj/
+out/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+
+# NuGet
+packages/
+nuget.config
+
+# Docker
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# Git
+.git/
+.gitignore
+.github/
+
+# Logs
+*.log
+logs/
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+
+# IDE
+.vscode/
+.idea/
+
+# Node.js (futuro frontend)
+node_modules/
+package-lock.json
+
+# Arquivos do sistema
+nul
+Thumbs.db
+Desktop.ini
+
+# Coverage
+coverage/
+*.info
