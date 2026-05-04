@@ -2,7 +2,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using SolarSystem.Application.Common;
+using SolarSystem.Application.Common.Interfaces;
+using SolarSystem.Domain.Identity;
 using SolarSystem.Infrastructure.Services;
+using System.Security.Claims;
 
 namespace SolarSystem.Api.Controllers;
 
@@ -12,11 +15,22 @@ public class AuthController : ControllerBase
 {
     private readonly IJwtService _jwtService;
     private readonly IConfiguration _configuration;
+    private readonly IUserRepository _userRepository;
+    private readonly ITenantRepository _tenantRepository;
+    private readonly IPasswordHasher _passwordHasher;
 
-    public AuthController(IJwtService jwtService, IConfiguration configuration)
+    public AuthController(
+        IJwtService jwtService,
+        IConfiguration configuration,
+        IUserRepository userRepository,
+        ITenantRepository tenantRepository,
+        IPasswordHasher passwordHasher)
     {
         _jwtService = jwtService;
         _configuration = configuration;
+        _userRepository = userRepository;
+        _tenantRepository = tenantRepository;
+        _passwordHasher = passwordHasher;
     }
 
     [HttpPost("login")]
@@ -26,12 +40,14 @@ public class AuthController : ControllerBase
         if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
             return BadRequest(new { error = "E-mail e senha são obrigatórios." });
 
-        // TODO: Validar usuário no banco (Tenant/User entities)
-        var userId = Guid.NewGuid();
-        var tenantId = Guid.NewGuid();
-        var role = "admin";
+        var user = await _userRepository.GetByEmailAsync(request.Email);
+        if (user == null || !user.IsActive)
+            return Unauthorized(new { error = "Credenciais inválidas." });
 
-        var tokens = _jwtService.GenerateTokens(userId, tenantId, role);
+        if (!_passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
+            return Unauthorized(new { error = "Credenciais inválidas." });
+
+        var tokens = _jwtService.GenerateTokens(user.Id, user.TenantId, user.Role);
 
         return Ok(new
         {
@@ -45,8 +61,31 @@ public class AuthController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
-        // TODO: Implementar criação de tenant + usuário admin no banco
-        return Ok(new { message = "Registro realizado com sucesso. Implementação completa pendente." });
+        if (string.IsNullOrWhiteSpace(request.CompanyName) ||
+            string.IsNullOrWhiteSpace(request.Email) ||
+            string.IsNullOrWhiteSpace(request.Password) ||
+            string.IsNullOrWhiteSpace(request.Name))
+            return BadRequest(new { error = "Todos os campos são obrigatórios." });
+
+        var existingUser = await _userRepository.GetByEmailAsync(request.Email);
+        if (existingUser != null)
+            return BadRequest(new { error = "E-mail já cadastrado." });
+
+        var tenant = SolarSystem.Domain.Identity.Tenant.Create(request.CompanyName);
+        await _tenantRepository.CreateAsync(tenant);
+
+        var passwordHash = _passwordHasher.HashPassword(request.Password);
+        var user = SolarSystem.Domain.Identity.User.Create(tenant.Id, request.Email, request.Name, passwordHash, "admin");
+        await _userRepository.CreateAsync(user);
+
+        var tokens = _jwtService.GenerateTokens(user.Id, user.TenantId, user.Role);
+
+        return Ok(new
+        {
+            accessToken = tokens.AccessToken,
+            expiresAt = tokens.ExpiresAt,
+            refreshToken = tokens.RefreshToken
+        });
     }
 
     [HttpPost("refresh")]
