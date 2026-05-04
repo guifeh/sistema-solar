@@ -20,11 +20,15 @@ public static class DependencyInjection
             options.UseNpgsql(connectionString);
         });
 
-        // Temporary dev implementation — replace with JWT-based service in EP-08
-        services.AddScoped<ICurrentUserService, DevCurrentUserService>();
+        services.AddHttpContextAccessor();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
 
         // Repositories
         services.AddScoped<ILeadRepository, LeadRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ITenantRepository, TenantRepository>();
 
         return services;
     }
