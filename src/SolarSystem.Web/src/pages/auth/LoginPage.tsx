@@ -62,22 +62,22 @@ export function LoginPage() {
       </div>
 
       {/* Right panel — login form */}
-      <div className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-md animate-fade-in">
+      <div className="flex-1 flex items-center justify-center p-8 lg:p-12">
+        <div className="w-full max-w-xl animate-fade-in">
           {/* Mobile logo */}
           <div className="flex items-center gap-3 mb-8 lg:hidden">
-            <div className="w-10 h-10 rounded-xl gradient-solar flex items-center justify-center shadow-lg">
-              <Sun className="w-6 h-6 text-surface-900" />
+            <div className="w-12 h-12 rounded-xl gradient-solar flex items-center justify-center shadow-lg">
+              <Sun className="w-7 h-7 text-surface-900" />
             </div>
             <h1 className="text-2xl font-bold text-surface-100">Sistema Solar</h1>
           </div>
 
-          <div>
-            <h2 className="text-2xl font-bold text-surface-100 mb-2">Bem-vindo de volta</h2>
-            <p className="text-surface-400 mb-8">Entre na sua conta para continuar</p>
+          <div className="mb-10">
+            <h2 className="text-4xl font-bold text-surface-100 mb-3 tracking-tight">Bem-vindo de volta</h2>
+            <p className="text-xl text-surface-400">Entre na sua conta para continuar</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-8">
             {error && (
               <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-sm text-red-400 animate-fade-in">
                 {error}
@@ -90,7 +90,7 @@ export function LoginPage() {
               placeholder="seu@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              icon={<Mail className="w-4 h-4" />}
+              icon={<Mail className="w-5 h-5" />}
               required
               autoComplete="email"
             />
@@ -101,7 +101,7 @@ export function LoginPage() {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              icon={<Lock className="w-4 h-4" />}
+              icon={<Lock className="w-5 h-5" />}
               required
               autoComplete="current-password"
             />
@@ -113,15 +113,15 @@ export function LoginPage() {
               size="lg"
             >
               Entrar
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-5 h-5" />
             </Button>
           </form>
 
-          <p className="mt-8 text-center text-sm text-surface-500">
+          <p className="mt-10 text-center text-base text-surface-500">
             Não tem uma conta?{' '}
             <Link
               to="/register"
-              className="text-solar-400 hover:text-solar-300 font-medium transition-colors"
+              className="text-solar-400 hover:text-solar-300 font-semibold transition-colors"
             >
               Cadastre-se gratuitamente
             </Link>
