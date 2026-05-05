@@ -34,7 +34,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               text-surface-100 placeholder-surface-600
               focus:outline-none focus:ring-4 focus:ring-solar-500/20 focus:border-solar-500
               transition-all duration-300 ease-out
-              pr-5 py-4 text-lg
+              pr-4 py-3 text-base
               ${error ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500' : ''}
               ${className}
             `}
