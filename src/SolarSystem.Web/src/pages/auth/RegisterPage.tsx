@@ -48,28 +48,28 @@ export function RegisterPage() {
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
         <div className="absolute inset-0 gradient-solar opacity-10" />
         <div className="absolute inset-0 bg-gradient-to-br from-surface-950/80 via-surface-950/60 to-transparent" />
-        <div className="relative z-10 flex flex-col justify-center px-16">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-12 h-12 rounded-2xl gradient-solar flex items-center justify-center shadow-xl animate-pulse-solar">
-              <Sun className="w-7 h-7 text-surface-900" />
+        <div className="relative z-10 flex flex-col justify-center w-full px-12 lg:px-24 xl:px-32 2xl:px-40">
+          <div className="flex items-center gap-4 mb-10">
+            <div className="w-14 h-14 rounded-2xl gradient-solar flex items-center justify-center shadow-xl animate-pulse-solar">
+              <Sun className="w-8 h-8 text-surface-900" />
             </div>
-            <h1 className="text-3xl font-bold text-surface-100">Sistema Solar</h1>
+            <h1 className="text-4xl font-bold text-surface-100">Sistema Solar</h1>
           </div>
-          <h2 className="text-5xl font-bold text-surface-100 leading-tight mb-6">
+          <h2 className="text-5xl xl:text-6xl font-bold text-surface-100 leading-tight mb-8">
             Comece a gerar
             <br />
             <span className="text-solar-400">propostas profissionais</span>
             <br />
             em minutos.
           </h2>
-          <p className="text-lg text-surface-400 max-w-md">
+          <p className="text-xl text-surface-400 max-w-lg leading-relaxed">
             Cadastre sua empresa e tenha acesso a todo o ecossistema de gestão para integradores solares.
           </p>
         </div>
       </div>
 
       {/* Right panel — register form */}
-      <div className="flex-1 flex items-center justify-center p-8 lg:p-12">
+      <div className="flex-1 flex items-center justify-center p-8 lg:p-16 xl:p-24">
         <div className="w-full max-w-xl animate-fade-in">
           {/* Mobile logo */}
           <div className="flex items-center gap-3 mb-8 lg:hidden">
