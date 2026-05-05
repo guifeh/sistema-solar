@@ -14,10 +14,12 @@ x86/
 Win32/
 ARM/
 ARM64/
-bld/
-Bin/
-Obj/
-Out/
+[Bb]ld/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+bin/
+obj/
 
 # .NET
 project.lock.json

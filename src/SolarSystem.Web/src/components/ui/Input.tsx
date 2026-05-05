@@ -11,18 +11,18 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const inputId = id || label?.toLowerCase().replace(/\s+/g, '-');
 
     return (
-      <div className="space-y-1.5">
+      <div className="flex flex-col gap-2">
         {label && (
           <label
             htmlFor={inputId}
-            className="block text-sm font-medium text-surface-300"
+            className="block text-sm font-semibold tracking-wide text-surface-300 uppercase ml-1"
           >
             {label}
           </label>
         )}
-        <div className="relative">
+        <div className="relative flex items-center">
           {icon && (
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-surface-500">
+            <div className="absolute left-4 flex items-center pointer-events-none text-surface-500">
               {icon}
             </div>
           )}
@@ -30,19 +30,20 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             id={inputId}
             className={`
-              w-full rounded-xl bg-surface-800/80 border border-surface-700
-              text-surface-100 placeholder-surface-500
-              focus:outline-none focus:ring-2 focus:ring-solar-500/50 focus:border-solar-500
-              transition-all duration-200
-              ${icon ? 'pl-10' : 'pl-4'} pr-4 py-2.5 text-sm
-              ${error ? 'border-red-500 focus:ring-red-500/50 focus:border-red-500' : ''}
+              w-full rounded-2xl bg-surface-900 border-2 border-surface-800
+              text-surface-100 placeholder-surface-600
+              focus:outline-none focus:ring-4 focus:ring-solar-500/20 focus:border-solar-500
+              transition-all duration-300 ease-out
+              pr-4 py-3 text-base
+              ${error ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500' : ''}
               ${className}
             `}
+            style={{ paddingLeft: icon ? '3.5rem' : '1.25rem' }}
             {...props}
           />
         </div>
         {error && (
-          <p className="text-xs text-red-400 mt-1">{error}</p>
+          <p className="text-sm text-red-400 mt-1">{error}</p>
         )}
       </div>
     );
