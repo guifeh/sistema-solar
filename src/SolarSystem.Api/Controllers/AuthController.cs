@@ -53,7 +53,15 @@ public class AuthController : ControllerBase
         {
             accessToken = tokens.AccessToken,
             expiresAt = tokens.ExpiresAt,
-            refreshToken = tokens.RefreshToken
+            refreshToken = tokens.RefreshToken,
+            user = new {
+                id = user.Id,
+                email = user.Email,
+                name = user.Name,
+                role = user.Role,
+                tenantId = user.TenantId,
+                tenantName = "Sistema Solar" // Optional: fetch actual tenant name if needed
+            }
         });
     }
 
@@ -84,7 +92,15 @@ public class AuthController : ControllerBase
         {
             accessToken = tokens.AccessToken,
             expiresAt = tokens.ExpiresAt,
-            refreshToken = tokens.RefreshToken
+            refreshToken = tokens.RefreshToken,
+            user = new {
+                id = user.Id,
+                email = user.Email,
+                name = user.Name,
+                role = user.Role,
+                tenantId = user.TenantId,
+                tenantName = tenant.Name
+            }
         });
     }
 
