@@ -3,3 +3,4 @@ export { Input } from './Input';
 export { Card, CardHeader, CardContent } from './Card';
 export { Badge } from './Badge';
 export { Spinner, PageSpinner } from './Spinner';
+export { Modal } from './Modal';
