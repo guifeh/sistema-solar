@@ -2,6 +2,7 @@ using FluentValidation;
 using MediatR;
 using SolarSystem.Application.Common;
 using SolarSystem.Application.Common.Interfaces;
+using SolarSystem.Domain.Common;
 using SolarSystem.Domain.Leads;
 
 namespace SolarSystem.Application.Leads.Commands;
@@ -35,8 +36,8 @@ public class CreateLeadCommandValidator : AbstractValidator<CreateLeadCommand>
             .WithMessage("E-mail inválido.");
 
         RuleFor(x => x.Uf)
-            .Length(2).When(x => !string.IsNullOrEmpty(x.Uf))
-            .WithMessage("UF deve ter 2 caracteres.");
+            .Must(BrazilianStates.IsValid).When(x => !string.IsNullOrEmpty(x.Uf))
+            .WithMessage("UF inválida.");
 
         RuleFor(x => x.City)
             .MaximumLength(100).WithMessage("Cidade deve ter no máximo 100 caracteres.");

@@ -39,7 +39,11 @@ artifacts/
 *.nupkg
 *.snupkg
 **/packages/
+# Configs de NuGet costumam carregar credencial de feed privado — por isso ficam de fora.
+# A excecao e a da raiz, que so fixa nuget.org como fonte e evita que a config pessoal
+# da maquina (packageSourceMapping de outro projeto) quebre o restore.
 **/nuget.config
+!/nuget.config
 
 # Test results
 TestResults/

@@ -1,16 +1,18 @@
 # Build output
-bin/
-obj/
-out/
+# Prefixo **/ e obrigatorio: no .dockerignore "obj/" casa so com a raiz, e os obj/
+# do host (com caminhos Windows no project.assets.json) quebram o build no container.
+**/bin/
+**/obj/
+**/out/
 
 # Visual Studio
 .vs/
-*.suo
-*.user
+**/*.suo
+**/*.user
 
-# NuGet
+# NuGet — nuget.config entra na imagem de proposito, para o restore no container
+# usar as mesmas fontes do restore local.
 packages/
-nuget.config
 
 # Docker
 .dockerignore
@@ -35,9 +37,9 @@ TestResults/
 .vscode/
 .idea/
 
-# Node.js (futuro frontend)
-node_modules/
-package-lock.json
+# Frontend: nao entra na imagem da API
+src/SolarSystem.Web/
+**/node_modules/
 
 # Arquivos do sistema
 nul

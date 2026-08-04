@@ -10,8 +10,10 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
+      // So entra em uso quando VITE_API_URL nao esta definido; o alvo acompanha
+      // a porta da API no docker-compose.
       '/api': {
-        target: 'http://localhost:5000',
+        target: process.env.VITE_API_URL || 'http://localhost:5000',
         changeOrigin: true,
       },
     },

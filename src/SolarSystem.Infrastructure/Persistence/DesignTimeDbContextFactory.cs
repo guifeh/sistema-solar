@@ -13,6 +13,6 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<SolarDbCon
         var optionsBuilder = new DbContextOptionsBuilder<SolarDbContext>();
         optionsBuilder.UseNpgsql(connectionString);
 
-        return new SolarDbContext(optionsBuilder.Options, null);
+        return new SolarDbContext(optionsBuilder.Options);
     }
 }

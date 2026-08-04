@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SolarSystem.Application.Leads.Commands;
 using SolarSystem.Application.Leads.Queries;
@@ -6,6 +7,7 @@ using SolarSystem.Application.Leads.Queries;
 namespace SolarSystem.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class LeadsController : ControllerBase
 {

@@ -31,7 +31,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.IsActive)
             .HasDefaultValue(true);
 
-        builder.HasIndex(u => u.Email);
-        builder.HasIndex(u => new { u.TenantId, u.Email }).IsUnique();
+        // Login e feito so com e-mail, sem informar a empresa: o e-mail precisa ser unico
+        // na base inteira, nao apenas dentro do tenant.
+        builder.HasIndex(u => u.Email).IsUnique();
+        builder.HasIndex(u => u.TenantId);
     }
 }
