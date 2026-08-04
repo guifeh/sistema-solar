@@ -1,5 +1,5 @@
 import { Sun, Users, FileText, TrendingUp, Zap } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { Card, CardContent, Badge } from '../../components/ui';
 
 const quickStats = [

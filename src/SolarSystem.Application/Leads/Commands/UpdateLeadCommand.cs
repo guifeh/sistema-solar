@@ -2,6 +2,7 @@ using FluentValidation;
 using MediatR;
 using SolarSystem.Application.Common;
 using SolarSystem.Application.Common.Interfaces;
+using SolarSystem.Domain.Common;
 using SolarSystem.Domain.Leads;
 
 namespace SolarSystem.Application.Leads.Commands;
@@ -26,7 +27,8 @@ public class UpdateLeadCommandValidator : AbstractValidator<UpdateLeadCommand>
         RuleFor(x => x.Name).MaximumLength(200).When(x => x.Name != null);
         RuleFor(x => x.Phone).MaximumLength(20).When(x => x.Phone != null);
         RuleFor(x => x.Email).EmailAddress().When(x => x.Email != null);
-        RuleFor(x => x.Uf).Length(2).When(x => x.Uf != null);
+        RuleFor(x => x.Uf).Must(BrazilianStates.IsValid).When(x => !string.IsNullOrEmpty(x.Uf))
+            .WithMessage("UF inválida.");
         RuleFor(x => x.City).MaximumLength(100).When(x => x.City != null);
     }
 }

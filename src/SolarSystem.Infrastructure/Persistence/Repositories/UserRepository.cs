@@ -4,6 +4,11 @@ using SolarSystem.Domain.Identity;
 
 namespace SolarSystem.Infrastructure.Persistence.Repositories;
 
+/// <summary>
+/// As buscas por e-mail e por id rodam no fluxo de autenticacao, antes de existir um tenant
+/// no contexto — por isso ignoram o filtro global. E o unico repositorio autorizado a fazer
+/// isso: qualquer consulta de dados de negocio deve respeitar o filtro.
+/// </summary>
 public class UserRepository : IUserRepository
 {
     private readonly SolarDbContext _context;
@@ -16,12 +21,14 @@ public class UserRepository : IUserRepository
     public async Task<User?> GetByEmailAsync(string email, CancellationToken ct = default)
     {
         return await _context.Users
+            .IgnoreQueryFilters()
             .FirstOrDefaultAsync(u => u.Email == email, ct);
     }
 
     public async Task<User?> GetByIdAsync(Guid id, CancellationToken ct = default)
     {
         return await _context.Users
+            .IgnoreQueryFilters()
             .FirstOrDefaultAsync(u => u.Id == id, ct);
     }
 

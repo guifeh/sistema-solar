@@ -1,87 +1,42 @@
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
+import { useState, useCallback, type ReactNode } from 'react';
 import api from '../lib/api';
+import { authStorage } from '../lib/authStorage';
+import { AuthContext, type RegisterData, type User } from './auth-context';
 
-interface User {
-  id: string;
-  email: string;
-  name: string;
-  role: string;
-  tenantId: string;
-  tenantName: string;
+function readStoredSession(): User | null {
+  return authStorage.getAccessToken() ? authStorage.getUser() : null;
 }
-
-interface AuthContextType {
-  user: User | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (data: RegisterData) => Promise<void>;
-  logout: () => Promise<void>;
-}
-
-interface RegisterData {
-  companyName: string;
-  adminName: string;
-  email: string;
-  password: string;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    const token = localStorage.getItem('access_token');
-
-    if (storedUser && token) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch {
-        localStorage.removeItem('user');
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-      }
-    }
-    setIsLoading(false);
-  }, []);
+  // Sessao lida no inicializador do useState: nao ha efeito nem render intermediario
+  // com o usuario deslogado antes do localStorage ser consultado.
+  const [user, setUser] = useState<User | null>(readStoredSession);
 
   const login = useCallback(async (email: string, password: string) => {
-    const response = await api.post('/auth/login', { email, password });
-    const { accessToken, refreshToken, user: userData } = response.data;
-
-    localStorage.setItem('access_token', accessToken);
-    localStorage.setItem('refresh_token', refreshToken);
-    localStorage.setItem('user', JSON.stringify(userData));
-    setUser(userData);
+    const { data } = await api.post('/auth/login', { email, password });
+    authStorage.setSession(data.accessToken, data.refreshToken, data.user);
+    setUser(data.user);
   }, []);
 
-  const register = useCallback(async (data: RegisterData) => {
-    const response = await api.post('/auth/register', {
-      companyName: data.companyName,
-      name: data.adminName,
-      email: data.email,
-      password: data.password,
+  const register = useCallback(async (payload: RegisterData) => {
+    const { data } = await api.post('/auth/register', {
+      companyName: payload.companyName,
+      name: payload.adminName,
+      email: payload.email,
+      password: payload.password,
     });
-    const { accessToken, refreshToken, user: userData } = response.data;
-
-    localStorage.setItem('access_token', accessToken);
-    localStorage.setItem('refresh_token', refreshToken);
-    localStorage.setItem('user', JSON.stringify(userData));
-    setUser(userData);
+    authStorage.setSession(data.accessToken, data.refreshToken, data.user);
+    setUser(data.user);
   }, []);
 
   const logout = useCallback(async () => {
     try {
-      await api.post('/auth/logout');
+      // O backend revoga o refresh token; sem ele o logout seria so no cliente.
+      await api.post('/auth/logout', { refreshToken: authStorage.getRefreshToken() ?? '' });
     } catch {
-      // Silently fail — clean up locally regardless
+      // Falha no servidor nao pode impedir a limpeza local da sessao.
     }
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user');
+    authStorage.clear();
     setUser(null);
   }, []);
 
@@ -90,7 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         user,
         isAuthenticated: !!user,
-        isLoading,
+        isLoading: false,
         login,
         register,
         logout,
@@ -99,12 +54,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       {children}
     </AuthContext.Provider>
   );
-}
-
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
 }
