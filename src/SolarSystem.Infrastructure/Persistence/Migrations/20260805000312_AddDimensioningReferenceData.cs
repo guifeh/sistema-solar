@@ -58,40 +58,58 @@ namespace SolarSystem.Infrastructure.Persistence.Migrations
         }
 
         /// <summary>
-        /// Irradiacao solar media diaria (kWh/m²/dia) das 27 UFs.
-        /// Fonte: CRESESB — Atlas Brasileiro de Energia Solar (ADR-004, dataset estatico).
+        /// Irradiacao global horizontal media diaria (kWh/m²/dia) das 27 UFs.
+        ///
+        /// Fonte: NASA POWER (Prediction of Worldwide Energy Resources), parametro
+        /// ALLSKY_SFC_SW_DWN, climatologia anual. Licenca CC BY 4.0 — permite uso comercial
+        /// e trabalho derivado, exigindo apenas citacao.
+        ///
+        /// Por que nao o CRESESB/LABREN, apesar de ser a referencia do setor no Brasil: o
+        /// Atlas Brasileiro de Energia Solar e publicado sob CC BY-NC-ND, que veda uso
+        /// comercial E trabalho derivado sem autorizacao expressa do INPE. Este produto e um
+        /// SaaS comercial, e agregar a grade do Atlas em media por UF e um derivado — os dois
+        /// pontos seriam violados. Ficou registrado como pendencia no backlog: se o INPE
+        /// autorizar, vale trocar, porque o modelo BRASIL-SR e calibrado para o Brasil.
+        ///
+        /// Metodo: media aritmetica de 4 a 5 municipios por UF, distribuidos entre capital e
+        /// interior. So a capital enviesaria o numero para baixo — a maioria das capitais
+        /// brasileiras e litoranea e mais nublada que o interior do proprio estado (em SP a
+        /// capital marca 4.53 e Ribeirao Preto 5.37).
+        ///
+        /// Reproduzivel por tools/irradiation/Build-IrradiationDataset.ps1, que lista os
+        /// pontos consultados e regera este bloco.
         /// </summary>
         private static void SeedIrradiation(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@"
                 INSERT INTO irradiation_by_uf (""Uf"", ""StateName"", ""AverageIrradiation"", ""Source"", ""UpdatedAt"") VALUES
-                    ('AC', 'Acre',                5.18, 'CRESESB 2024', now()),
-                    ('AL', 'Alagoas',             5.92, 'CRESESB 2024', now()),
-                    ('AP', 'Amapá',               5.55, 'CRESESB 2024', now()),
-                    ('AM', 'Amazonas',            4.82, 'CRESESB 2024', now()),
-                    ('BA', 'Bahia',               5.98, 'CRESESB 2024', now()),
-                    ('CE', 'Ceará',               6.12, 'CRESESB 2024', now()),
-                    ('DF', 'Distrito Federal',    5.48, 'CRESESB 2024', now()),
-                    ('ES', 'Espírito Santo',      5.22, 'CRESESB 2024', now()),
-                    ('GO', 'Goiás',               5.58, 'CRESESB 2024', now()),
-                    ('MA', 'Maranhão',            5.88, 'CRESESB 2024', now()),
-                    ('MT', 'Mato Grosso',         5.42, 'CRESESB 2024', now()),
-                    ('MS', 'Mato Grosso do Sul',  5.12, 'CRESESB 2024', now()),
-                    ('MG', 'Minas Gerais',        5.35, 'CRESESB 2024', now()),
-                    ('PA', 'Pará',                5.28, 'CRESESB 2024', now()),
-                    ('PB', 'Paraíba',             6.08, 'CRESESB 2024', now()),
-                    ('PR', 'Paraná',              4.68, 'CRESESB 2024', now()),
-                    ('PE', 'Pernambuco',          6.15, 'CRESESB 2024', now()),
-                    ('PI', 'Piauí',               5.92, 'CRESESB 2024', now()),
-                    ('RJ', 'Rio de Janeiro',      5.02, 'CRESESB 2024', now()),
-                    ('RN', 'Rio Grande do Norte', 6.22, 'CRESESB 2024', now()),
-                    ('RS', 'Rio Grande do Sul',   4.52, 'CRESESB 2024', now()),
-                    ('RO', 'Rondônia',            5.08, 'CRESESB 2024', now()),
-                    ('RR', 'Roraima',             5.45, 'CRESESB 2024', now()),
-                    ('SC', 'Santa Catarina',      4.65, 'CRESESB 2024', now()),
-                    ('SP', 'São Paulo',           4.82, 'CRESESB 2024', now()),
-                    ('SE', 'Sergipe',             6.05, 'CRESESB 2024', now()),
-                    ('TO', 'Tocantins',           5.68, 'CRESESB 2024', now())
+                    ('AC', 'Acre',                4.69, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('AL', 'Alagoas',             5.75, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('AP', 'Amapá',               5.02, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('AM', 'Amazonas',            4.71, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('BA', 'Bahia',               5.50, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('CE', 'Ceará',               5.79, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('DF', 'Distrito Federal',    5.54, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('ES', 'Espírito Santo',      4.98, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('GO', 'Goiás',               5.52, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('MA', 'Maranhão',            5.40, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('MT', 'Mato Grosso',         5.31, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('MS', 'Mato Grosso do Sul',  5.19, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('MG', 'Minas Gerais',        5.30, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('PA', 'Pará',                5.03, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('PB', 'Paraíba',             5.88, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('PR', 'Paraná',              4.80, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('PE', 'Pernambuco',          5.82, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('PI', 'Piauí',               5.86, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('RJ', 'Rio de Janeiro',      4.88, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('RN', 'Rio Grande do Norte', 6.01, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('RS', 'Rio Grande do Sul',   4.67, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('RO', 'Rondônia',            4.84, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('RR', 'Roraima',             5.10, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('SC', 'Santa Catarina',      4.42, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('SP', 'São Paulo',           5.10, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('SE', 'Sergipe',             5.56, 'NASA POWER (CERES/MERRA-2)', now()),
+                    ('TO', 'Tocantins',           5.41, 'NASA POWER (CERES/MERRA-2)', now())
                 ON CONFLICT (""Uf"") DO UPDATE SET
                     ""StateName"" = EXCLUDED.""StateName"",
                     ""AverageIrradiation"" = EXCLUDED.""AverageIrradiation"",

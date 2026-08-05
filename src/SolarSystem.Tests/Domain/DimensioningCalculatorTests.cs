@@ -6,11 +6,13 @@ namespace SolarSystem.Tests.Domain;
 
 public class DimensioningCalculatorTests
 {
-    private const decimal IrradiationSp = 4.82m;
+    // Valor arbitrario de referencia para exercitar a formula. Nao e o dado de nenhuma UF:
+    // a base de irradiacao pode mudar de fonte sem invalidar estes testes.
+    private const decimal IrradiacaoReferencia = 4.82m;
 
     private static DimensioningInput Input(
         int consumption = 500,
-        decimal irradiation = IrradiationSp,
+        decimal irradiation = IrradiacaoReferencia,
         decimal lossFactor = 0.80m,
         RoofOrientation orientation = RoofOrientation.North,
         int modulePowerW = 550,
@@ -73,7 +75,7 @@ public class DimensioningCalculatorTests
     {
         var result = DimensioningCalculator.Calculate(Input(orientation: orientation));
 
-        var esperado = Math.Round(IrradiationSp * 0.80m * (decimal)factor, 2, MidpointRounding.AwayFromZero);
+        var esperado = Math.Round(IrradiacaoReferencia * 0.80m * (decimal)factor, 2, MidpointRounding.AwayFromZero);
         result.EffectiveIrradiation.Should().Be(esperado);
     }
 

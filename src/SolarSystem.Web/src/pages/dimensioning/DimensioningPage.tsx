@@ -306,6 +306,21 @@ export function DimensioningPage() {
         </>
       )}
 
+      {/* Atribuição exigida pela licença CC BY 4.0 da base de irradiação. */}
+      <p className="text-xs text-surface-600">
+        Irradiação média por UF derivada do{' '}
+        <a
+          href="https://power.larc.nasa.gov/"
+          target="_blank"
+          rel="noreferrer"
+          className="underline hover:text-surface-400"
+        >
+          NASA POWER
+        </a>{' '}
+        (Prediction of Worldwide Energy Resources), licença CC BY 4.0. Valor médio do estado — para
+        maior precisão, use a irradiação do local da instalação.
+      </p>
+
       <ConsumptionEstimatorModal
         isOpen={estimatorOpen}
         uf={uf}

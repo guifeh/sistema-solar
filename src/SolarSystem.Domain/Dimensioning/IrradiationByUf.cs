@@ -1,8 +1,10 @@
 namespace SolarSystem.Domain.Dimensioning;
 
 /// <summary>
-/// Irradiacao solar media diaria por UF, em kWh/m²/dia. Dataset estatico (ADR-004),
-/// fonte CRESESB — Atlas Brasileiro de Energia Solar.
+/// Irradiacao global horizontal media diaria por UF, em kWh/m²/dia. Dataset estatico
+/// (ADR-004), derivado da API NASA POWER — CC BY 4.0, que permite uso comercial.
+/// Ver a migration AddDimensioningReferenceData para o metodo e o porque de nao usar o
+/// Atlas do LABREN/INPE.
 /// </summary>
 public class IrradiationByUf
 {
@@ -18,7 +20,7 @@ public class IrradiationByUf
         string uf,
         string stateName,
         decimal averageIrradiation,
-        string source = "CRESESB 2024")
+        string source = "NASA POWER (CERES/MERRA-2)")
     {
         if (string.IsNullOrWhiteSpace(uf) || uf.Length != 2)
             throw new Common.DomainException("UF deve ter 2 caracteres.");
