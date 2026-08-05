@@ -3,6 +3,7 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   Users,
+  Calculator,
   FileText,
   Settings,
   LogOut,
@@ -16,6 +17,7 @@ import { useAuth } from '../../hooks/useAuth';
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/leads', label: 'Leads', icon: Users },
+  { to: '/dimensionamento', label: 'Dimensionamento', icon: Calculator },
   { to: '/propostas', label: 'Propostas', icon: FileText, disabled: true },
   { to: '/configuracoes', label: 'Configurações', icon: Settings, disabled: true },
 ];

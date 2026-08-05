@@ -34,8 +34,9 @@ public class SolarDbContext : DbContext
     public DbSet<User> Users => Set<User>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
-    // Global
+    // Global (dados de referencia, sem tenant)
     public DbSet<IrradiationByUf> IrradiationByUfs => Set<IrradiationByUf>();
+    public DbSet<ConsumptionProfile> ConsumptionProfiles => Set<ConsumptionProfile>();
 
     // Leads
     public DbSet<Lead> Leads => Set<Lead>();

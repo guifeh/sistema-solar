@@ -16,11 +16,18 @@ public class IrradiationByUfConfiguration : IEntityTypeConfiguration<Irradiation
             .IsRequired()
             .HasMaxLength(2);
 
+        builder.Property(i => i.StateName)
+            .IsRequired()
+            .HasMaxLength(50);
+
         builder.Property(i => i.AverageIrradiation)
             .IsRequired()
             .HasColumnType("decimal(6,4)");
 
         builder.Property(i => i.Source)
             .HasMaxLength(100);
+
+        builder.Property(i => i.UpdatedAt)
+            .IsRequired();
     }
 }
