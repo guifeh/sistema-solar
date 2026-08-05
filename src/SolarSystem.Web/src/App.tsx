@@ -9,6 +9,7 @@ import { RegisterPage } from './pages/auth/RegisterPage';
 import { DashboardPage } from './pages/dashboard/DashboardPage';
 import { LeadsPage } from './pages/leads/LeadsPage';
 import { LeadDetailPage } from './pages/leads/LeadDetailPage';
+import { DimensioningPage } from './pages/dimensioning/DimensioningPage';
 import { ProposalPublicPage } from './pages/public/ProposalPublicPage';
 
 const queryClient = new QueryClient({
@@ -42,6 +43,7 @@ export default function App() {
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/leads" element={<LeadsPage />} />
             <Route path="/leads/:id" element={<LeadDetailPage />} />
+            <Route path="/dimensionamento" element={<DimensioningPage />} />
           </Route>
 
           {/* Public routes (proposal link) */}
